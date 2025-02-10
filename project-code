@@ -1,0 +1,43 @@
+import numpy as np
+import pandas as pd
+import joblib
+from flask import Flask, request, jsonify
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+
+# Load Dataset (Replace with actual HR dataset)
+data = pd.read_csv('hr_employee_data.csv')
+
+# Preprocessing
+data.fillna(0, inplace=True)
+label_enc = LabelEncoder()
+data['department'] = label_enc.fit_transform(data['department'])
+data['education'] = label_enc.fit_transform(data['education'])
+data['gender'] = label_enc.fit_transform(data['gender'])
+data['recruitment_channel'] = label_enc.fit_transform(data['recruitment_channel'])
+
+# Define Features & Target
+X = data[['department', 'education', 'gender', 'recruitment_channel', 'no_of_trainings', 'age', 'previous_year_rating',
+          'length_of_service', 'KPIs_met', 'awards_won', 'avg_training_score']]
+y = data['promotion_eligibility']
+
+# Train Model
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+joblib.dump(model, 'promotion_predictor.pkl')
+
+# Flask API
+app = Flask(__name__)
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.json
+    features = np.array(data['features']).reshape(1, -1)
+    model = joblib.load('promotion_predictor.pkl')
+    prediction = model.predict(features)
+    return jsonify({'promotion_eligible': bool(prediction[0])})
+
+if __name__ == '__main__':
+    app.run(debug=True)
