@@ -1,0 +1,9 @@
+employee_id,department,education,gender,recruitment_channel,no_of_trainings,age,previous_year_rating,length_of_service,KPIs_met,awards_won,avg_training_score,promotion_eligibility
+1001,Sales,Masters,Male,Referral,3,28,4,5,1,0,85,1
+1002,HR,Bachelors,Female,Campus,1,32,3,7,0,1,78,0
+1003,IT,PhD,Male,Online,2,30,5,10,1,0,90,1
+1004,Marketing,Masters,Female,Referral,4,27,2,3,0,1,72,0
+1005,Finance,Bachelors,Male,Walk-in,1,35,4,6,1,0,88,1
+1006,HR,Masters,Female,Campus,3,29,3,5,1,1,80,1
+1007,Sales,PhD,Male,Online,2,33,5,9,0,0,76,0
+1008,IT,Bachelors,Female,Walk-in,1,26,2,4,1,1,83,1
